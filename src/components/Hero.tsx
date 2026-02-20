@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const Hero = () => {
@@ -27,8 +28,8 @@ const Hero = () => {
           </h1>
 
           <p className="text-lg text-white/80 mb-8 leading-relaxed">
-            We deliver cutting-edge technology solutions that transform ideas into 
-            powerful digital experiences. From web development to cloud infrastructure, 
+            We deliver cutting-edge technology solutions that transform ideas into
+            powerful digital experiences. From web development to cloud infrastructure,
             we're your partner in digital innovation.
           </p>
 
@@ -38,10 +39,10 @@ const Hero = () => {
               className="bg-white text-primary hover:bg-white/90 font-medium"
               asChild
             >
-              <a href="/project-request">
+              <Link to="/project-request">
                 Schedule Consultation
                 <ArrowRight className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </Button>
             <Button
               size="lg"

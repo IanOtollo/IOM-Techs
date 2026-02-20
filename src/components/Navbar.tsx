@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   { name: "Home", href: "/#home" },
@@ -17,17 +18,15 @@ const Navbar = ({ isHero = true }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isHero ? "bg-transparent" : "bg-background/95 backdrop-blur-sm border-b border-border"
-    }`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isHero ? "bg-transparent" : "bg-background/95 backdrop-blur-sm border-b border-border"
+      }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a
             href="#home"
-            className={`text-xl font-semibold tracking-tight ${
-              isHero ? "text-white" : "text-foreground"
-            }`}
+            className={`text-xl font-semibold tracking-tight ${isHero ? "text-white" : "text-foreground"
+              }`}
           >
             IOM Techs
           </a>
@@ -38,24 +37,23 @@ const Navbar = ({ isHero = true }: NavbarProps) => {
               <a
                 key={link.name}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  isHero 
-                    ? "text-white/80 hover:text-white" 
+                className={`text-sm font-medium transition-colors ${isHero
+                    ? "text-white/80 hover:text-white"
                     : "text-muted-foreground hover:text-foreground"
-                }`}
+                  }`}
               >
                 {link.name}
               </a>
             ))}
-            <Button 
+            <Button
               size="sm"
-              className={isHero 
-                ? "bg-white text-primary hover:bg-white/90" 
+              className={isHero
+                ? "bg-white text-primary hover:bg-white/90"
                 : "bg-primary text-primary-foreground hover:bg-primary/90"
               }
               asChild
             >
-              <a href="/project-request">Get Started</a>
+              <Link to="/project-request">Get Started</Link>
             </Button>
           </div>
 
@@ -76,23 +74,22 @@ const Navbar = ({ isHero = true }: NavbarProps) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className={`text-sm font-medium ${
-                    isHero ? "text-white/80" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-medium ${isHero ? "text-white/80" : "text-muted-foreground"
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}
                 </a>
               ))}
-              <Button 
-                size="sm" 
-                className={isHero 
-                  ? "bg-white text-primary w-full" 
+              <Button
+                size="sm"
+                className={isHero
+                  ? "bg-white text-primary w-full"
                   : "bg-primary text-primary-foreground w-full"
                 }
                 asChild
               >
-                <a href="/project-request">Get Started</a>
+                <Link to="/project-request">Get Started</Link>
               </Button>
             </div>
           </div>
