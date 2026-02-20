@@ -66,21 +66,21 @@ const ProjectRequestForm = () => {
     email: "",
     phone: "",
     company: "",
-    
+
     // Project Details
     serviceType: "",
     projectDescription: "",
     budget: "",
     timeline: "",
-    
+
     // Features
     selectedFeatures: [] as string[],
-    
+
     // References
     referenceLinks: "",
     designStyle: "",
     brandColors: "",
-    
+
     // Meeting
     preferredContact: "",
     googleMeetRequest: false,
@@ -91,7 +91,7 @@ const ProjectRequestForm = () => {
   // Handle file drop
   const onDrop = async (acceptedFiles: File[]) => {
     setUploadingFiles(true);
-    
+
     try {
       const uploadPromises = acceptedFiles.map(async (file) => {
         const formData = new FormData();
@@ -141,6 +141,10 @@ const ProjectRequestForm = () => {
     setUploadedFiles(uploadedFiles.filter((_, i) => i !== index));
   };
 
+  /**
+   * Toggles a feature in the selectedFeatures array
+   * @param feature The name of the feature to toggle
+   */
   const toggleFeature = (feature: string) => {
     setFormData({
       ...formData,
@@ -150,49 +154,56 @@ const ProjectRequestForm = () => {
     });
   };
 
+  /**
+   * Handles the form submission to EmailJS
+   * Prepares structured data for the email template
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Prepare email template parameters
+      // 1. Format the files list for high readability
       const filesText = uploadedFiles.length > 0
-        ? uploadedFiles.map((f) => `${f.name} (${f.size}MB): ${f.url}`).join("\n")
-        : "No files uploaded";
+        ? uploadedFiles.map((f, i) => `${i + 1}. ${f.name} (${f.size} MB)\n   Link: ${f.url}`).join("\n\n")
+        : "No files provided by the client.";
 
+      // 2. Format the features list with clear bullet points
       const featuresText = formData.selectedFeatures.length > 0
-        ? formData.selectedFeatures.map((f) => `☑ ${f}`).join("\n")
-        : "No specific features selected";
+        ? formData.selectedFeatures.map((f) => `▶ ${f}`).join("\n")
+        : "No specific features requested.";
 
+      // 3. Map form data to EmailJS template variables
+      // Ensure these match your "Project Request" template in the EmailJS dashboard
       const templateParams = {
-        // Client Info
+        // --- Client Information ---
         client_name: formData.name,
         client_email: formData.email,
         client_phone: formData.phone,
-        client_company: formData.company || "N/A",
-        
-        // Project Details
+        client_company: formData.company || "Individual / Not Specified",
+
+        // --- Project Overview ---
         service_type: formData.serviceType,
         project_description: formData.projectDescription,
         budget: formData.budget,
         timeline: formData.timeline,
-        
-        // Features
+
+        // --- Technical Requirements ---
         features: featuresText,
-        
-        // References
+
+        // --- Visual & Media ---
         uploaded_files: filesText,
-        reference_links: formData.referenceLinks || "None provided",
-        design_style: formData.designStyle || "Not specified",
-        brand_colors: formData.brandColors || "Not specified",
-        
-        // Meeting
-        preferred_contact: formData.preferredContact || "Email",
-        google_meet: formData.googleMeetRequest ? "Yes" : "No",
-        meeting_times: formData.meetingTimes || "Not specified",
-        additional_notes: formData.additionalNotes || "None",
-        
-        // Metadata
+        reference_links: formData.referenceLinks || "No reference links provided.",
+        design_style: formData.designStyle || "Open to suggestions / Not specified",
+        brand_colors: formData.brandColors || "Client has no existing brand colors.",
+
+        // --- Meeting Settings ---
+        preferred_contact: formData.preferredContact || "Email (Default)",
+        google_meet: formData.googleMeetRequest ? "YES - Client wants a video call" : "NO - Video call not requested",
+        meeting_times: formData.meetingTimes || "Not specified (Inquire via email)",
+        additional_notes: formData.additionalNotes || "No additional notes.",
+
+        // --- System Metadata ---
         submission_date: new Date().toLocaleString("en-US", {
           timeZone: "Africa/Nairobi",
           dateStyle: "full",
@@ -209,7 +220,7 @@ const ProjectRequestForm = () => {
       );
 
       toast.success("Thank you! Your project request has been submitted. We'll get back to you within 24 hours.");
-      
+
       // Reset form
       setFormData({
         name: "",
@@ -432,11 +443,10 @@ const ProjectRequestForm = () => {
               </label>
               <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-sm p-8 text-center cursor-pointer transition-colors ${
-                  isDragActive
+                className={`border-2 border-dashed rounded-sm p-8 text-center cursor-pointer transition-colors ${isDragActive
                     ? "border-primary bg-primary/5"
                     : "border-border bg-background hover:border-primary"
-                }`}
+                  }`}
               >
                 <input {...getInputProps()} />
                 <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
