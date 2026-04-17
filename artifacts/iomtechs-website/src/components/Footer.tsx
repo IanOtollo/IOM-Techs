@@ -1,1 +1,15 @@
-export default function Footer() { return <footer className="py-12 border-t border-white/10 bg-background"><div className="container px-6 flex flex-col md:flex-row justify-between items-center gap-6"><div className="font-mono font-bold text-xl flex items-center gap-2"><div className="w-6 h-6 bg-primary rounded-sm flex items-center justify-center text-black text-xs">I</div>OM Techs.</div><p className="text-white/40 text-sm">© 2024 IOM Techs. All rights reserved.</p></div></footer>; }
+export default function Footer() {
+  return (
+    <footer className="py-10 border-t border-border bg-background">
+      <div className="container px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <span className="text-sm font-mono font-medium text-foreground tracking-widest uppercase">IOM Techs</span>
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
+          <p className="text-xs text-muted-foreground">
+            Nairobi, Kenya · <a href="https://github.com/IanOtollo" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">github.com/IanOtollo</a>
+          </p>
+          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} IOM Techs. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}

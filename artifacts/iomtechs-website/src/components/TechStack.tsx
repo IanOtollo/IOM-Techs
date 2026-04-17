@@ -1,25 +1,31 @@
-import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPython, SiPostgresql, SiDocker } from "react-icons/si";
+import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPython, SiPostgresql, SiDocker, SiPhp, SiJavascript } from "react-icons/si";
+
+const techs = [
+  { icon: SiTypescript, name: "TypeScript" },
+  { icon: SiReact, name: "React" },
+  { icon: SiNextdotjs, name: "Next.js" },
+  { icon: SiNodedotjs, name: "Node.js" },
+  { icon: SiPython, name: "Python" },
+  { icon: SiPhp, name: "PHP" },
+  { icon: SiJavascript, name: "JavaScript" },
+  { icon: SiTailwindcss, name: "Tailwind CSS" },
+  { icon: SiPostgresql, name: "PostgreSQL" },
+  { icon: SiDocker, name: "Docker" },
+];
 
 export default function TechStack() {
-  const techs = [
-    { icon: SiReact, name: "React" },
-    { icon: SiNextdotjs, name: "Next.js" },
-    { icon: SiTypescript, name: "TypeScript" },
-    { icon: SiTailwindcss, name: "Tailwind" },
-    { icon: SiNodedotjs, name: "Node.js" },
-    { icon: SiPython, name: "Python" },
-    { icon: SiPostgresql, name: "PostgreSQL" },
-    { icon: SiDocker, name: "Docker" },
-  ];
-
   return (
-    <section className="py-20 border-y border-white/5 bg-black/50">
+    <section id="stack" className="py-20 border-t border-border">
       <div className="container px-6">
-        <p className="text-center text-sm font-mono text-white/40 mb-10 uppercase tracking-widest">Powered By</p>
-        <div className="flex flex-wrap justify-center gap-12 opacity-60">
+        <p className="text-xs font-mono text-muted-foreground uppercase tracking-[0.2em] mb-10">Technologies</p>
+        <div className="flex flex-wrap gap-6">
           {techs.map((t) => (
-            <div key={t.name} className="flex flex-col items-center gap-2 hover:opacity-100 hover:text-primary transition-all">
-              <t.icon className="w-8 h-8 md:w-10 md:h-10" />
+            <div
+              key={t.name}
+              className="flex items-center gap-2 border border-border px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
+            >
+              <t.icon className="w-4 h-4" />
+              <span className="font-mono">{t.name}</span>
             </div>
           ))}
         </div>

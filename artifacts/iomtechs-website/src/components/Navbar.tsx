@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -19,71 +15,68 @@ export default function Navbar() {
     { name: "Services", href: "#services" },
     { name: "Work", href: "#portfolio" },
     { name: "About", href: "#story" },
-    { name: "Process", href: "#process" },
+    { name: "Stack", href: "#stack" },
   ];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/80 backdrop-blur-md border-b border-white/5 py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/95 backdrop-blur-sm border-b border-border py-4" : "bg-transparent py-6"
       }`}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <a href="#" className="text-2xl font-bold font-mono tracking-tighter text-white flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center text-black">I</div>
-          OM Techs<span className="text-primary">.</span>
+        <a href="#" className="text-sm font-mono font-medium tracking-widest text-foreground uppercase">
+          IOM Techs
         </a>
 
-        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-white/70 hover:text-primary transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.name}
             </a>
           ))}
-          <Button className="bg-primary text-black hover:bg-white transition-colors" size="sm">
-            Let's Talk
-          </Button>
+          <a
+            href="#contact"
+            className="text-sm font-medium border border-border px-4 py-1.5 text-foreground hover:bg-foreground hover:text-background transition-all"
+          >
+            Contact
+          </a>
         </nav>
 
-        {/* Mobile Toggle */}
         <button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-foreground p-2"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Nav */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-white/5 p-6 flex flex-col gap-6 md:hidden"
+      {mobileMenuOpen && (
+        <div className="absolute top-full left-0 right-0 bg-background border-b border-border p-6 flex flex-col gap-5 md:hidden">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className="text-base text-muted-foreground hover:text-foreground"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.name}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            className="text-base font-medium border border-border px-4 py-2 text-foreground text-center hover:bg-foreground hover:text-background transition-all"
+            onClick={() => setMobileMenuOpen(false)}
           >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-lg font-medium text-white/80 hover:text-primary"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <Button className="bg-primary text-black w-full" size="lg">
-              Let's Talk
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Contact
+          </a>
+        </div>
+      )}
     </header>
   );
 }

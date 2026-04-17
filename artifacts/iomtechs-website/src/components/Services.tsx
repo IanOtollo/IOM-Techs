@@ -2,37 +2,63 @@ import { motion } from "framer-motion";
 import { Code2, Smartphone, Cpu, BrainCircuit, Cloud, PenTool } from "lucide-react";
 
 const services = [
-  { icon: Code2, title: "Web Development", desc: "Ultra-fast, scalable web applications built with modern frameworks." },
-  { icon: Smartphone, title: "Mobile Apps", desc: "Native-feeling iOS and Android apps that users love." },
-  { icon: Cpu, title: "Software Engineering", desc: "Complex enterprise software architecture and backend systems." },
-  { icon: BrainCircuit, title: "AI & ML Solutions", desc: "Intelligent automation and predictive models tailored to your business." },
-  { icon: Cloud, title: "Cloud & DevOps", desc: "Robust infrastructure, CI/CD pipelines, and cloud migration." },
-  { icon: PenTool, title: "UI/UX Design", desc: "Stunning interfaces that convert and engage." },
+  {
+    icon: Code2,
+    title: "Web Development",
+    desc: "Scalable web applications built with modern TypeScript stacks. From government portals to commercial platforms.",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile Applications",
+    desc: "Responsive, cross-platform mobile experiences that work reliably on any device.",
+  },
+  {
+    icon: Cpu,
+    title: "Software Engineering",
+    desc: "Backend systems, APIs, and enterprise-grade architecture built for performance and maintainability.",
+  },
+  {
+    icon: BrainCircuit,
+    title: "AI & ML Systems",
+    desc: "Practical AI integrations — from face recognition to threat intelligence and predictive analytics.",
+  },
+  {
+    icon: Cloud,
+    title: "Cloud & DevOps",
+    desc: "Deployment pipelines, cloud hosting, and infrastructure management that keeps your systems running.",
+  },
+  {
+    icon: PenTool,
+    title: "UI/UX Design",
+    desc: "Clean, functional interfaces that prioritise usability and serve real user needs.",
+  },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="py-32 relative">
-      <div className="container px-6 mx-auto">
-        <div className="mb-20 max-w-2xl">
-          <h2 className="text-sm font-mono text-primary mb-4 uppercase tracking-widest">Capabilities</h2>
-          <h3 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Full-spectrum engineering.</h3>
-          <p className="text-lg text-white/60">We don't just write code. We architect solutions that scale, perform, and dominate their markets.</p>
+    <section id="services" className="py-28 border-t border-border">
+      <div className="container px-6">
+        <div className="mb-16 max-w-2xl">
+          <p className="text-xs font-mono text-muted-foreground uppercase tracking-[0.2em] mb-4">Capabilities</p>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">What we build.</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            We work across the full stack — from database design to production deployment.
+          </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
           {services.map((s, i) => (
-            <motion.div 
+            <motion.div
               key={s.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-8 border border-white/10 bg-white/[0.02] hover:bg-white/[0.04] transition-colors group cursor-pointer"
+              transition={{ delay: i * 0.06 }}
+              className="bg-background p-8 hover:bg-muted transition-colors group"
             >
-              <s.icon className="w-10 h-10 text-primary mb-6 group-hover:text-secondary transition-colors" />
-              <h4 className="text-xl font-bold mb-3">{s.title}</h4>
-              <p className="text-white/60 leading-relaxed">{s.desc}</p>
+              <s.icon className="w-5 h-5 text-muted-foreground mb-6 group-hover:text-foreground transition-colors" />
+              <h3 className="text-base font-semibold mb-2">{s.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
             </motion.div>
           ))}
         </div>

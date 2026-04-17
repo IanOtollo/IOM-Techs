@@ -1,67 +1,38 @@
-import { motion } from "framer-motion";
-import { Zap, ShieldCheck, Rocket, Target } from "lucide-react";
-
-const reasons = [
+const points = [
   {
-    icon: Zap,
-    title: "Uncompromising Speed",
-    desc: "We build systems that are lightning fast from day one. Performance isn't an afterthought; it's a core requirement."
+    title: "Real-world experience",
+    desc: "We've built systems for county governments, universities, enterprises, and startups. Our portfolio is live and verifiable.",
   },
   {
-    icon: ShieldCheck,
-    title: "Enterprise Security",
-    desc: "Bank-grade security protocols integrated into every layer of our applications. Your data is fortified."
+    title: "Full-stack capability",
+    desc: "Frontend, backend, databases, cloud deployment, AI integration — we handle the complete product, not just one layer.",
   },
   {
-    icon: Rocket,
-    title: "Scalable Architecture",
-    desc: "Infrastructure designed to grow. When your user base 10xs overnight, your systems won't blink."
+    title: "African context",
+    desc: "We understand the infrastructure, connectivity, and market conditions of building software in East Africa.",
   },
   {
-    icon: Target,
-    title: "Laser Focus",
-    desc: "We don't take every project. We partner with ambitious companies and dedicate our top talent to their success."
-  }
+    title: "Transparent process",
+    desc: "No black boxes. You see the code, the progress, and the decisions at every stage of the project.",
+  },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-32">
+    <section className="py-28 border-t border-border">
       <div className="container px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-sm font-mono text-secondary mb-4 uppercase tracking-widest">The IOM Difference</h2>
-            <h3 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">We build what others say is impossible.</h3>
-            <p className="text-lg text-white/60 mb-8 max-w-lg leading-relaxed">
-              We aren't an agency; we're an extension of your engineering team. We bring intense focus, deep technical expertise, and a refusal to settle for "good enough." 
-            </p>
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-secondary/10 border border-secondary/20 rounded-full text-secondary font-mono text-sm">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
-              </span>
-              Always shipping
+        <div className="mb-16 max-w-xl">
+          <p className="text-xs font-mono text-muted-foreground uppercase tracking-[0.2em] mb-4">Why IOM Techs</p>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Why work with us.</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
+          {points.map((p) => (
+            <div key={p.title} className="bg-background p-8">
+              <h3 className="text-base font-semibold mb-3">{p.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
             </div>
-          </div>
-          
-          <div className="grid sm:grid-cols-2 gap-6">
-            {reasons.map((r, i) => (
-              <motion.div 
-                key={r.title}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 bg-white/[0.03] border border-white/5 rounded-xl hover:bg-white/[0.05] transition-colors"
-              >
-                <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-6">
-                  <r.icon className="w-6 h-6 text-secondary" />
-                </div>
-                <h4 className="text-xl font-bold mb-2">{r.title}</h4>
-                <p className="text-white/60 text-sm leading-relaxed">{r.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </section>
