@@ -1,0 +1,3 @@
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+export default function CTA() { return <section className="py-32 bg-primary text-black"><div className="container px-6 text-center max-w-3xl mx-auto"><h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">Ready to build?</h2><p className="text-xl mb-10 opacity-80">Stop compromising. Let's build software that redefines your industry.</p><Button size="lg" className="bg-black text-white hover:bg-black/80 h-16 px-10 text-xl rounded-none">Start Your Project <ArrowRight className="ml-2" /></Button></div></section>; }

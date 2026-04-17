@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "IOM Techs - Official Website"
+version = "1.0.0"
+id = "artifacts/iomtechs-website"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19339
+
+[services.development]
+run = "pnpm --filter @workspace/iomtechs-website run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/iomtechs-website", "run", "build" ]
+publicDir = "artifacts/iomtechs-website/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19339"
+BASE_PATH = "/"

@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "w2o4HxJbl9ND8vNQgBBRC"
+uri = "file://artifacts/iomtechs-website/public/images/hero-bg.png"
+type = "image"
+title = "Hero background abstract data"
+
+[[generated]]
+id = "4EK3nYFj7oNIDTcM9xIVM"
+uri = "file://artifacts/iomtechs-website/public/images/portfolio-1.png"
+type = "image"
+title = "Banking app dashboard"
+
+[[generated]]
+id = "IvxRnIfG07B1ETRHv3x8N"
+uri = "file://artifacts/iomtechs-website/public/images/portfolio-2.png"
+type = "image"
+title = "Fitness app interface"
+
+[[generated]]
+id = "J7crpLGlfWXMJ0SlrWSDA"
+uri = "file://artifacts/iomtechs-website/public/images/portfolio-3.png"
+type = "image"
+title = "AI analytics software"
+
+[[generated]]
+id = "ls2xBh5mqwS1PnJ4wFw8P"
+uri = "file://artifacts/iomtechs-website/public/images/team.png"
+type = "image"
+title = "Modern tech team"
