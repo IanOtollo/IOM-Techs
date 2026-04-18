@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd artifacts/iomtechs-website && pnpm install && pnpm run build",
+  "outputDirectory": "artifacts/iomtechs-website/dist",
+  "installCommand": "pnpm install -w"
+}
