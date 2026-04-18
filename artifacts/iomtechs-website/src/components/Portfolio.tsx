@@ -1,162 +1,180 @@
+import { useEffect, useRef, useState } from "react";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Star } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const projects = [
+gsap.registerPlugin(ScrollTrigger);
+
+interface Repo {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  homepage: string | null;
+  language: string | null;
+  stargazers_count: number;
+}
+
+const highlighted = [
   {
     name: "BuildConnect Kenya",
     url: "https://buildconnect-ke.vercel.app",
     github: "https://github.com/IanOtollo/buildconnect-frontend",
-    description: "A construction industry platform connecting contractors, suppliers, and clients across Kenya. Full-stack TypeScript application with project management and tender workflows.",
-    tags: ["TypeScript", "Web App", "Platform"],
+    tag: "Web Platform",
+    desc: "Construction industry platform connecting contractors, suppliers, and clients across Kenya.",
+    stack: ["TypeScript", "React", "Vercel"],
   },
   {
     name: "Busia County Portal",
     url: "https://busiacounty.vercel.app",
     github: "https://github.com/IanOtollo/busia-county-website",
-    description: "Official digital portal for Busia County Government. Citizens can access services, news, and county information through a responsive, accessible web interface.",
-    tags: ["TypeScript", "Government", "Web App"],
-  },
-  {
-    name: "IOM Properties",
-    url: "https://iomproperties.vercel.app",
-    github: "https://github.com/IanOtollo/IOMProperties",
-    description: "Real estate listings and property management platform. Browse, list, and manage properties with a clean, professional interface built for agents and buyers.",
-    tags: ["TypeScript", "Real Estate", "Platform"],
-  },
-  {
-    name: "EventFlow Pro",
-    url: "https://iombookings.vercel.app",
-    github: "https://github.com/IanOtollo/eventflow-pro",
-    description: "End-to-end event booking and management system. Handles ticketing, attendee management, and scheduling for organizers in East Africa.",
-    tags: ["TypeScript", "SaaS", "Bookings"],
-  },
-  {
-    name: "IOM Cars",
-    url: "https://iomcars.vercel.app",
-    github: "https://github.com/IanOtollo/iomcars",
-    description: "Automotive marketplace for buying and selling vehicles in Kenya. Listings, filtering, dealer profiles, and enquiry management in one platform.",
-    tags: ["TypeScript", "Marketplace", "Web App"],
-  },
-  {
-    name: "IOM Transit",
-    url: "https://iomtransit.vercel.app",
-    github: "https://github.com/IanOtollo/IOM-Transit",
-    description: "Urban transport management and tracking platform designed for fleet operators and commuters, providing real-time route and schedule information.",
-    tags: ["TypeScript", "Transport", "Web App"],
+    tag: "Government",
+    desc: "Official digital portal for Busia County Government — citizen services, news, and county information.",
+    stack: ["TypeScript", "React"],
   },
   {
     name: "ClearCom CTI Platform",
     url: "https://github.com/IanOtollo/clearcom-ti-platform",
     github: "https://github.com/IanOtollo/clearcom-ti-platform",
-    description: "Email security and cyber threat intelligence platform for ClearCom Kenya. Aggregates threat feeds, performs analysis, and generates security reports.",
-    tags: ["Python", "Cybersecurity", "Enterprise"],
-  },
-  {
-    name: "School Biometric System",
-    url: "https://school-biometric-system.vercel.app",
-    github: "https://github.com/IanOtollo/school-biometric-system",
-    description: "Face recognition access control system deployed in schools. Automates attendance tracking and campus security using computer vision.",
-    tags: ["JavaScript", "AI", "Security"],
-  },
-  {
-    name: "Home Energy Insights",
-    url: "https://3nergy-sage.vercel.app",
-    github: "https://github.com/IanOtollo/home-energy-insights",
-    description: "Dashboard for monitoring and optimising residential energy consumption. Visualises usage patterns and provides recommendations to reduce costs.",
-    tags: ["TypeScript", "Data Viz", "Dashboard"],
-  },
-  {
-    name: "Busia Job & Internship Portal",
-    url: "https://busia-portal-site.vercel.app",
-    github: "https://github.com/IanOtollo/Busia-portal-site",
-    description: "Regional employment portal connecting job seekers and employers in Busia County. Features listings, applications, and employer dashboards.",
-    tags: ["PHP", "Portal", "Employment"],
-  },
-  {
-    name: "JKUAT Emergency Portal",
-    url: "https://jkuat-emergency-portal.up.railway.app/",
-    github: "https://github.com/IanOtollo/jkuat-emergency-portal",
-    description: "Campus emergency response and alert system for JKUAT university. Enables rapid incident reporting and coordination between security and administration.",
-    tags: ["JavaScript", "Safety", "Portal"],
-  },
-  {
-    name: "Skanem Helpdesk System",
-    url: "https://helpdesk.up.railway.app/",
-    github: "https://github.com/IanOtollo/skanem-helpdesk-system",
-    description: "Customer support ticket management system. Enables teams to handle, track, and resolve client issues with an organised, prioritised workflow.",
-    tags: ["Python", "SaaS", "Support"],
+    tag: "Cybersecurity",
+    desc: "Email security and cyber threat intelligence platform for ClearCom Kenya. Aggregates threat feeds and generates security reports.",
+    stack: ["Python", "FastAPI", "PostgreSQL"],
   },
 ];
 
 export default function Portfolio() {
-  return (
-    <section id="portfolio" className="py-28 border-t border-border">
-      <div className="container px-6">
-        <div className="mb-16">
-          <p className="text-xs font-mono text-muted-foreground uppercase tracking-[0.2em] mb-4">Selected Work</p>
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Real projects. Real clients.</h2>
-        </div>
+  const cardsRef = useRef<HTMLDivElement>(null);
+  const [repos, setRepos] = useState<Repo[]>([]);
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
-          {projects.map((project, i) => (
-            <motion.article
-              key={project.name}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.04 }}
-              className="bg-background p-8 flex flex-col gap-4 group"
+  useEffect(() => {
+    fetch("https://api.github.com/users/IanOtollo/repos?sort=updated&per_page=6")
+      .then((r) => r.json())
+      .then((data: Repo[]) => {
+        setRepos(data.filter((r) => r.description || r.homepage).slice(0, 6));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const cards = cardsRef.current?.querySelectorAll(".proj-card");
+    if (!cards?.length) return;
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.12,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: { trigger: cardsRef.current, start: "top 80%", toggleActions: "play none none none" },
+      }
+    );
+  }, [repos]);
+
+  return (
+    <section id="portfolio" className="py-28 bg-[#0a0a0a]">
+      <div className="max-w-6xl mx-auto px-6">
+        <p className="font-mono text-[11px] text-zinc-500 uppercase tracking-[0.2em] mb-5">Selected Work</p>
+        <h2 className="text-[clamp(36px,5vw,56px)] font-bold text-white mb-16 leading-tight">
+          Projects that ship and scale.
+        </h2>
+
+        {/* Featured */}
+        <div ref={cardsRef} className="flex flex-col gap-6 mb-16">
+          {highlighted.map((p) => (
+            <motion.div
+              key={p.name}
+              whileHover={{ borderColor: "rgba(255,255,255,0.2)" }}
+              className="proj-card glass rounded-3xl p-8 md:p-10 grid md:grid-cols-2 gap-8 items-center opacity-0"
             >
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="text-base font-semibold leading-snug">{project.name}</h3>
-                <div className="flex items-center gap-2 shrink-0 mt-0.5">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="GitHub"
-                  >
-                    <Github className="w-4 h-4" />
-                  </a>
-                  {project.url !== project.github && (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                      aria-label="Live site"
-                    >
-                      <ExternalLink className="w-4 h-4" />
+              <div>
+                <span className="inline-block glass-pill text-[11px] font-mono text-zinc-400 px-3 py-1 mb-4">
+                  {p.tag}
+                </span>
+                <h3 className="text-[28px] font-bold text-white mb-3">{p.name}</h3>
+                <p className="text-sm text-zinc-400 leading-relaxed mb-5">{p.desc}</p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {p.stack.map((s) => (
+                    <span key={s} className="text-[11px] font-mono px-2 py-1 bg-white/5 border border-white/10 text-zinc-400">
+                      {s}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-4">
+                  {p.url !== p.github && (
+                    <a href={p.url} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-sm text-white hover:text-zinc-300 transition-colors">
+                      <ExternalLink size={14} /> Live Site
                     </a>
                   )}
+                  <a href={p.github} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors">
+                    <Github size={14} /> GitHub
+                  </a>
                 </div>
               </div>
-
-              <p className="text-sm text-muted-foreground leading-relaxed flex-1">{project.description}</p>
-
-              <div className="flex flex-wrap gap-2 pt-2">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs font-mono px-2 py-0.5 border border-border text-muted-foreground">
-                    {tag}
-                  </span>
-                ))}
+              {/* Abstract visual */}
+              <div className="hidden md:flex items-center justify-center h-48 rounded-xl bg-white/[0.02] border border-white/8">
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="10" width="100" height="100" rx="8" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+                  <rect x="25" y="25" width="70" height="6" rx="2" fill="rgba(255,255,255,0.1)"/>
+                  <rect x="25" y="37" width="50" height="4" rx="2" fill="rgba(255,255,255,0.06)"/>
+                  <rect x="25" y="47" width="60" height="4" rx="2" fill="rgba(255,255,255,0.06)"/>
+                  <rect x="25" y="65" width="30" height="30" rx="4" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
+                  <rect x="63" y="65" width="30" height="13" rx="2" fill="rgba(255,255,255,0.06)"/>
+                  <rect x="63" y="82" width="20" height="13" rx="2" fill="rgba(255,255,255,0.04)"/>
+                </svg>
               </div>
-            </motion.article>
+            </motion.div>
           ))}
         </div>
 
-        <div className="mt-8 pt-8 border-t border-border">
-          <a
-            href="https://github.com/IanOtollo"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
-          >
-            <Github className="w-4 h-4" />
-            View all repositories on GitHub →
-          </a>
-        </div>
+        {/* GitHub repos grid */}
+        {repos.length > 0 && (
+          <>
+            <p className="font-mono text-[11px] text-zinc-500 uppercase tracking-[0.2em] mb-6">More from GitHub</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+              {repos.map((r) => (
+                <a
+                  key={r.id}
+                  href={r.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass rounded-xl p-6 hover:border-white/20 transition-all group block"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 className="font-semibold text-white text-sm group-hover:text-zinc-200 transition-colors leading-snug">
+                      {r.name}
+                    </h4>
+                    <ExternalLink size={12} className="text-zinc-600 group-hover:text-zinc-400 shrink-0 mt-0.5 ml-2" />
+                  </div>
+                  {r.description && (
+                    <p className="text-xs text-zinc-500 leading-relaxed mb-4 line-clamp-2">{r.description}</p>
+                  )}
+                  <div className="flex items-center gap-3">
+                    {r.language && (
+                      <span className="text-[11px] font-mono px-2 py-0.5 border border-white/10 text-zinc-500">
+                        {r.language}
+                      </span>
+                    )}
+                    {r.stargazers_count > 0 && (
+                      <span className="flex items-center gap-1 text-[11px] text-zinc-600">
+                        <Star size={10} /> {r.stargazers_count}
+                      </span>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </>
+        )}
+
+        <Link href="/work" className="inline-flex items-center gap-2 glass-pill px-6 py-2.5 text-sm text-zinc-300 hover:text-white transition-colors">
+          <Github size={14} /> View all work →
+        </Link>
       </div>
     </section>
   );

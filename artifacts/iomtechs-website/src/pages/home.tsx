@@ -1,34 +1,29 @@
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
+import Layout from "@/components/Layout";
 import Hero from "@/components/Hero";
+import Marquee from "@/components/Marquee";
 import Stats from "@/components/Stats";
 import Services from "@/components/Services";
-import Story from "@/components/Story";
-import Process from "@/components/Process";
-import TechStack from "@/components/TechStack";
 import Portfolio from "@/components/Portfolio";
-import Testimonials from "@/components/Testimonials";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import Team from "@/components/Team";
+import Process from "@/components/Process";
 import CTA from "@/components/CTA";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-[100dvh] bg-background text-foreground overflow-x-hidden selection:bg-primary selection:text-primary-foreground">
-      <Navbar />
-      <Hero />
-      <Stats />
-      <Services />
-      <Story />
-      <Process />
-      <TechStack />
-      <Portfolio />
-      <Testimonials />
-      <WhyChooseUs />
-      <Team />
-      <CTA />
-      <Footer />
-    </main>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Layout>
+        <Hero />
+        <Marquee />
+        <Stats />
+        <Services />
+        <Portfolio />
+        <Process />
+        <CTA />
+      </Layout>
+    </motion.div>
   );
 }

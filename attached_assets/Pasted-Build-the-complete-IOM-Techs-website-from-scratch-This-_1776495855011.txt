@@ -1,0 +1,491 @@
+Build the complete IOM Techs website from scratch. This is a multi-page, production-grade software company website for IOM Techs — a Nairobi-based software development startup. The site must feel like it belongs next to Vercel, Linear, and Zera Studio in terms of design maturity. Immersive, scroll-driven, alive — not a static brochure.
+
+═══════════════════════════════════════
+TECH STACK
+═══════════════════════════════════════
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- GSAP + ScrollTrigger (scroll-driven animations)
+- Framer Motion (component-level transitions)
+- Lenis (smooth scroll)
+- Lucide React (icons only, no emojis)
+- next/font (Geist Sans + Geist Mono from Google)
+- Deployed on Replit
+
+Install:
+npm install gsap @gsap/react framer-motion lenis lucide-react
+
+═══════════════════════════════════════
+DESIGN SYSTEM — APPLY GLOBALLY
+═══════════════════════════════════════
+Colors:
+  --black: #000000
+  --white: #ffffff
+  --surface-1: #0a0a0a
+  --surface-2: #111111
+  --surface-3: #1a1a1a
+  --border: rgba(255,255,255,0.08)
+  --border-hover: rgba(255,255,255,0.18)
+  --text-primary: #ffffff
+  --text-secondary: #a1a1aa
+  --text-muted: #52525b
+
+Typography:
+  Font: Geist Sans (headings + body), Geist Mono (code snippets, labels)
+  Base: 16px
+  Small: 13px (minimum — never go below)
+  Lead: 18–20px
+  Section headings: 48–64px desktop / 32–40px mobile
+  Hero headline: 72–96px desktop / 44px mobile
+  Weight: 400 body, 700 headings, 900 hero
+  Letter spacing: -0.03em on large headings, 0.15em on small uppercase labels
+
+Liquid Glass (apply to: navbar, cards, modals, floating elements):
+  background: rgba(255,255,255,0.04)
+  backdrop-filter: blur(24px) saturate(180%)
+  -webkit-backdrop-filter: blur(24px) saturate(180%)
+  border: 1px solid rgba(255,255,255,0.09)
+  border-radius: 16px (cards), 9999px (pills), 12px (buttons)
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset,
+              0 20px 40px rgba(0,0,0,0.4)
+  RULE: Never stack more than 2 glass layers. Never blur over dense text.
+
+Background — Global:
+  Pure #000 base. Full-page SVG circuit/node grid overlay:
+  Fine white lines at 0.04 opacity — a 60px repeating grid with node dots 
+  at intersections — gives depth without color. Apply as a fixed 
+  background pattern in layout.tsx so it persists across all pages.
+  SVG pattern:
+  <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+    <circle cx="0" cy="0" r="1" fill="rgba(255,255,255,0.06)"/>
+  </pattern>
+
+Transitions: All interactive elements — 300ms ease-in-out
+Cursor: Custom cursor — small white circle (8px) that follows mouse, 
+        expands to 40px ring on hover over links/buttons. CSS only, no library.
+
+═══════════════════════════════════════
+SITE STRUCTURE — MULTIPLE PAGES
+═══════════════════════════════════════
+/                    → Home
+/services            → Services
+/work                → Our Work / Projects
+/about               → About IOM Techs
+/pricing             → Pricing
+/contact             → Contact
+/project-request     → Start a Project (form)
+
+Each page loads independently, fast. Use next/link for navigation.
+Shared: Navbar + Footer components across all pages.
+
+═══════════════════════════════════════
+NAVBAR (shared component)
+═══════════════════════════════════════
+Sticky top-0. Liquid glass treatment.
+Height: 64px desktop / 56px mobile.
+
+Layout:
+  Left: IOM Techs wordmark — white, Geist Sans, font-bold, 18px
+  Center: Nav links — Home, Services, Work, About, Pricing, Contact
+          Centered using absolute positioning with transform: translateX(-50%)
+          left: 50% technique so logo stays truly left
+  Right: "Start a Project" CTA — liquid glass pill, white border, 
+         hover: bg-white text-black transition
+
+Nav links styling:
+  text-sm text-zinc-400 hover:text-white transition-colors duration-200
+  Active page: text-white with a 2px white underline dot below (not full underline)
+
+Mobile hamburger (below 768px):
+  Three lines that animate to X using pure CSS transforms:
+    Line 1: translateY(8px) rotate(45deg)
+    Line 2: opacity 0 scaleX(0)  
+    Line 3: translateY(-8px) rotate(-45deg)
+  Transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1)
+  
+  Mobile menu: Full screen overlay — bg-black/95 backdrop-blur-xl
+  Links centered vertically and horizontally, 32px font-size
+  Stagger-animate in with Framer Motion: each link slides up 20px + fades in
+  with 0.08s delay between each
+
+═══════════════════════════════════════
+PAGE 1: HOME (/)
+═══════════════════════════════════════
+
+HERO SECTION:
+Full viewport height. Scroll-triggered parallax on background grid.
+
+Layout: Centered content, max-w-4xl mx-auto, text-center
+
+Eyebrow label (animate in first, delay 0):
+  "NAIROBI, KENYA — SOFTWARE DEVELOPMENT STUDIO"
+  Geist Mono, 11px, text-zinc-500, uppercase, tracking-[0.2em]
+  Animate: fade up from y:10
+
+Main headline (animate in, delay 0.15s):
+  Line 1: "We Build" — white
+  Line 2: "Software" — white  
+  Line 3: "That Works." — white
+  96px desktop, 48px mobile, font-black, tracking-tight, leading-none
+  Each line animates in separately with 0.1s stagger, sliding up from y:30
+
+Subheadline (animate in, delay 0.4s):
+  "IOM Techs engineers custom web platforms, mobile apps, APIs, and 
+  automation systems for businesses that demand results."
+  18px, text-zinc-400, max-w-2xl mx-auto, leading-relaxed
+
+CTA row (animate in, delay 0.55s):
+  Button 1: "Start a Project" — solid white bg, black text, rounded-full, 
+             px-8 py-3.5, font-medium, hover: scale(1.02)
+  Button 2: "See Our Work" — liquid glass pill, text-white, 
+             hover: border-white/30
+
+Floating stat chips (animate in last, delay 0.7s, stagger 0.1s each):
+  Three chips floating in a row — liquid glass, rounded-full:
+    "12+ Projects Delivered"
+    "4 Countries Reached" 
+    "100% On-Time Delivery"
+  Each chip: Lucide icon left, text right, bg-white/5 border-white/10
+
+Scroll indicator:
+  Bottom center — "SCROLL" in Geist Mono 10px tracking-widest text-zinc-600
+  Animated arrow that bounces subtly (CSS keyframe, translateY 0→6px loop)
+
+SCROLL-TRIGGERED MARQUEE (after hero):
+Full-width horizontal scrolling text strip — auto-scrolling, no pause:
+  "WEB DEVELOPMENT · MOBILE APPS · API ENGINEERING · AUTOMATION · 
+   CLOUD SOLUTIONS · TECHNICAL CONSULTING · WEB DEVELOPMENT · "
+  White text on surface-2 background, Geist Mono, text-sm, tracking-widest
+  CSS animation: scroll-left infinite linear 25s
+  Border top and bottom: 1px solid rgba(255,255,255,0.08)
+
+SERVICES PREVIEW SECTION:
+Section label: "WHAT WE DO" — Geist Mono, 11px, text-zinc-500, tracking-[0.2em]
+Heading: "End-to-end digital engineering." — 56px, white, font-bold
+
+GSAP ScrollTrigger: As user scrolls into this section, cards animate in 
+with a stagger — each card slides up 40px and fades from opacity:0 → 1.
+
+6 service cards in CSS grid (3 cols desktop, 2 tablet, 1 mobile):
+  Each card: liquid glass, p-8, rounded-2xl
+  - Lucide icon top-left, 24px, text-white
+  - Service name: 20px font-semibold text-white mt-6
+  - Description: 14px text-zinc-400 mt-2 leading-relaxed
+  - Bottom: "Learn more →" text-zinc-500 hover:text-white text-sm mt-6
+  - Hover: border-white/20, translateY(-4px), transition 300ms
+
+Services:
+  1. Web Development (Globe icon) — "Blazing-fast, SEO-optimised websites 
+     and web applications built on Next.js and React."
+  2. Mobile Development (Smartphone icon) — "Cross-platform mobile apps 
+     for iOS and Android using React Native."
+  3. API & Backend (Server icon) — "Scalable REST and GraphQL APIs, 
+     database architecture, and backend systems."
+  4. Cloud & DevOps (Cloud icon) — "Deployment pipelines, hosting 
+     infrastructure, and cloud configuration on Vercel, AWS, and Railway."
+  5. Automation (Zap icon) — "Business process automation, bots, 
+     scheduled tasks, and workflow integrations."
+  6. Technical Consulting (Lightbulb icon) — "Tech stack audits, 
+     architecture planning, and CTO-as-a-service for early-stage startups."
+
+FEATURED WORK SECTION:
+Section label: "SELECTED WORK"
+Heading: "Projects that ship and scale."
+
+3 project cards — large format, not small thumbnails:
+  Each card: liquid glass, rounded-3xl, overflow-hidden, full-width on mobile
+  Card layout: Left side — project info, Right side — abstract visual (SVG 
+  illustration representing the project type — dark tones, white lines)
+  
+  Project info:
+    - Tag: "WEB PLATFORM" or "E-COMMERCE" etc — pill, Geist Mono, 11px
+    - Project name: 28px font-bold white
+    - Description: 14px text-zinc-400
+    - Stack chips: Next.js, Supabase, etc — tiny pills bg-white/5
+    - "View Project →" link
+
+  Real projects from GitHub (IanOtollo):
+    1. Clare Pastries — E-commerce + Admin Dashboard
+       Stack: Next.js 15, Sanity CMS, Supabase, M-Pesa (PayHero)
+    2. Robert Aswani Portfolio — Engineering Portfolio
+       Stack: React, GSAP, Three.js, Framer Motion
+    3. IOM Forms — SaaS Form Builder
+       Stack: Next.js 14, Prisma, PostgreSQL
+
+  Cards animate in on scroll with GSAP ScrollTrigger — slide in from bottom.
+
+PROCESS / HOW WE WORK SECTION:
+Heading: "From brief to launch — without the chaos."
+
+Horizontal scroll section on desktop (pinned scroll):
+  GSAP ScrollTrigger.pin — container is pinned while inner content 
+  scrolls horizontally as user scrolls vertically. Classic storytelling technique.
+  
+  4 steps that scroll horizontally:
+    Step 01 — Discovery
+    "We audit your goals, your users, and your technical constraints. 
+     No assumptions."
+    
+    Step 02 — Architecture
+    "We design the system before we write a single line of code. 
+     Structure first."
+    
+    Step 03 — Build
+    "Iterative development with weekly deliverables. You see progress, always."
+    
+    Step 04 — Launch & Support
+    "Deployment, testing, handover. Then we stay. Bugs don't sleep — neither do we."
+  
+  Each step: large step number in Geist Mono (96px, text-white/10 behind content),
+  title 32px white, description text-zinc-400 16px
+  Connected by a horizontal white line with animated progress dot
+
+TESTIMONIALS / TRUST SECTION:
+Heading: "Trusted by founders and builders."
+
+3 testimonial cards — liquid glass, stagger animate on scroll
+  Format: Quote text (16px italic text-zinc-300) + name + title + company
+
+STATS STRIP:
+4 large numbers in a row — animate counting up when scrolled into view:
+  "12+" Projects | "3+" Years | "4" Countries | "100%" Satisfaction
+  Numbers: 64px font-black white | Labels: 14px text-zinc-500 Geist Mono
+
+CTA SECTION (bottom of home):
+Full-width dark panel — surface-2 bg, rounded-3xl, mx-auto max-w-6xl
+Center-aligned:
+  Heading: "Ready to build something serious?"
+  Sub: "Tell us what you need. We'll tell you how to build it right."
+  Button: "Start a Project" — white bg black text, large, rounded-full
+
+═══════════════════════════════════════
+PAGE 2: SERVICES (/services)
+═══════════════════════════════════════
+Hero: "What we build — and how we build it."
+Subtext: Full paragraph on IOM Techs engineering approach.
+
+6 detailed service sections — each service gets its own full-width block:
+  Alternating layout (text left / visual right, then text right / visual left)
+  Visual: abstract SVG illustration relevant to the service
+  Content: service name, full description (3–4 sentences), 
+           key deliverables as a list, typical timeline, tech used
+
+Each block animates in on scroll with GSAP.
+
+═══════════════════════════════════════
+PAGE 3: WORK (/work)
+═══════════════════════════════════════
+Hero: "Our work speaks for itself."
+
+Fetch from GitHub API:
+  GET https://api.github.com/users/IanOtollo/repos?sort=updated&per_page=12
+
+Project grid — masonry-style, 3 cols desktop, 2 tablet, 1 mobile:
+  Each card: liquid glass, repo name, description, language pill (monochrome),
+  stars, GitHub link icon
+  Hover: scale(1.01) border-white/20
+
+Filter tabs above grid: All | Web | Mobile | API | Tools
+  Filter by repo topics if available, else show all.
+
+═══════════════════════════════════════
+PAGE 4: ABOUT (/about)
+═══════════════════════════════════════
+Hero: "Built in Nairobi. Built for the world."
+
+Sections:
+  1. Company story — who IOM Techs is, the mission, the standard we hold
+  2. Founder card — Ian Otollo, Founder & Lead Engineer
+     Liquid glass card, link to ianotollo.vercel.app, LinkedIn, GitHub
+  3. Values — 4 values in a 2x2 grid: Precision, Speed, Honesty, Quality
+  4. Tech stack we use — icon grid of technologies, monochrome
+  5. Location — "Headquartered in Nairobi, Kenya. Serving clients globally."
+
+═══════════════════════════════════════
+PAGE 5: PRICING (/pricing)
+═══════════════════════════════════════
+Heading: "Transparent pricing. No surprises."
+Subtext: "Enterprise-quality software at rates that respect where you are."
+
+3 pricing tiers in cards — liquid glass, 3 cols desktop, stacked mobile:
+
+  STARTER — "KES 15,000 – 35,000"
+  Best for: Small businesses, landing pages, portfolios
+  Includes:
+    · Up to 5 pages
+    · Mobile responsive
+    · Contact form
+    · Basic SEO
+    · 2 revision rounds
+    · 7–14 day delivery
+  CTA: "Get Started"
+
+  PROFESSIONAL — "KES 40,000 – 120,000" [MOST POPULAR badge]
+  Best for: Startups, e-commerce, web apps
+  Includes:
+    · Custom web application or e-commerce store
+    · CMS integration (Sanity / Contentful)
+    · Payment integration (M-Pesa / Stripe)
+    · Database + backend API
+    · Admin dashboard
+    · 14–30 day delivery
+    · 3 months post-launch support
+  CTA: "Start a Project"
+  Style: Slightly elevated — white border-white/20 vs others at border-white/08
+
+  ENTERPRISE — "Custom Quote"
+  Best for: Scale-ups, SaaS products, complex systems
+  Includes:
+    · Full-stack SaaS or platform build
+    · Cloud infrastructure setup
+    · CI/CD pipelines
+    · Performance optimisation
+    · Dedicated support SLA
+    · Timeline: scoped per project
+  CTA: "Book a Call"
+
+Below tiers:
+  FAQ accordion — 6 common questions about process, revisions, 
+  payment terms, hosting, maintenance. Smooth open/close animation.
+
+  Note: "All prices are in KES. USD quotes available on request."
+
+═══════════════════════════════════════
+PAGE 6: CONTACT (/contact)
+═══════════════════════════════════════
+Heading: "Let's build something."
+
+Two column layout — desktop (left info, right form), mobile (stacked):
+
+LEFT COLUMN:
+  "Get in touch"
+  
+  Contact details with Lucide icons:
+  · Email: ianotollo@gmail.com
+  · WhatsApp: +254 700 399 641 (link: wa.me/+254700399641)
+  · Location: Nairobi, Kenya
+  · Response time: "Usually within 24 hours"
+
+  Social links as icon buttons (liquid glass circles):
+  · LinkedIn: https://www.linkedin.com/in/ian-otollo-07b86a348/
+  · GitHub: https://github.com/IanOtollo
+  · Twitter/X: @Ian_Otollo
+
+RIGHT COLUMN — Contact form:
+  Fields: Name, Email, Company (optional), 
+          Service needed (dropdown: Web Dev, Mobile, API, Automation, 
+          Consulting, Other),
+          Budget range (dropdown: Under KES 35k, 35k–120k, 120k+, Custom),
+          Project brief (textarea, min 4 rows),
+          Submit button: "Send Message" — white bg black text full-width
+
+  Form inputs:
+    bg-white/5 border border-white/10 text-white 
+    placeholder:text-zinc-600 rounded-xl px-4 py-3
+    focus:border-white/30 focus:ring-0 focus:outline-none
+    transition-colors duration-200
+
+  On submit: show a success state — checkmark animation + 
+  "Message received. We'll respond within 24 hours."
+
+═══════════════════════════════════════
+PAGE 7: PROJECT REQUEST (/project-request)
+═══════════════════════════════════════
+Multi-step form — 3 steps with animated progress bar:
+
+  Step 1 — About You
+    · Full name
+    · Email
+    · Company/Organisation (optional)
+    · Country
+
+  Step 2 — Your Project
+    · Service type (multi-select chips — click to toggle)
+    · Project description (textarea)
+    · Budget range (slider or dropdown)
+    · Timeline needed (ASAP / 1 month / 3 months / Flexible)
+
+  Step 3 — Final Details
+    · How did you find us?
+    · Any reference websites you like?
+    · Additional notes
+    · Submit
+
+  Navigation: Back / Next buttons, 
+  Progress: Step 1 of 3 with animated white progress line
+  Active step chip: white bg black text
+  Inactive: liquid glass
+
+═══════════════════════════════════════
+FOOTER (shared component)
+═══════════════════════════════════════
+4-column layout desktop, 2-col tablet, 1-col mobile:
+
+  Col 1: Logo + tagline "Nairobi-built. World-class."
+          Social icons row (LinkedIn, GitHub, Twitter, WhatsApp)
+
+  Col 2: Services links
+    Web Development, Mobile Apps, API Development, 
+    Cloud & DevOps, Automation, Consulting
+
+  Col 3: Company links
+    About, Our Work, Pricing, Contact, Start a Project
+
+  Col 4: Contact info
+    ianotollo@gmail.com
+    +254 700 399 641
+    Nairobi, Kenya
+
+  Bottom bar: border-t border-white/08
+    Left: "© 2025 IOM Techs. All rights reserved."
+    Right: "Crafted by Ian Otollo" → links to ianotollo.vercel.app
+
+═══════════════════════════════════════
+ANIMATIONS — GLOBAL RULES
+═══════════════════════════════════════
+Lenis smooth scroll:
+  Initialize in layout.tsx — lerp: 0.1, duration: 1.2
+
+GSAP ScrollTrigger — apply to:
+  · Every section heading: fade up from y:30 opacity:0
+  · Service cards: stagger 0.1s, y:40 → y:0
+  · Stats: count up from 0 when in view
+  · Process steps: horizontal scroll pin
+  · Project cards: stagger slide up
+
+Framer Motion — apply to:
+  · Page transitions: opacity 0→1, y:10→0, 0.4s
+  · Navbar mobile menu: stagger link animations
+  · Hover states on all cards
+  · CTA button hover: scale 1.02
+
+Counter animation (stats):
+  Use GSAP's to() with snap:1 on a number value, 
+  triggered by ScrollTrigger when stat enters viewport.
+
+DO NOT:
+  · Use any color other than black, white, and grays
+  · Add gradients except black-to-transparent for section fades
+  · Use any icon library other than lucide-react
+  · Use emoji anywhere
+  · Use placeholder lorem ipsum — write real copy throughout
+  · Make any section a static non-animated block
+  · Allow horizontal scroll on any screen size
+  · Use background-attachment: fixed (breaks iOS)
+
+PERFORMANCE:
+  · Use next/image for all images
+  · Lazy load all sections below the fold
+  · GSAP animations only trigger once (toggleActions: "play none none none")
+  · No animation on users who prefer reduced motion 
+    (@media (prefers-reduced-motion: reduce) → disable all GSAP + Framer)
+
+MOBILE RULES (strict):
+  · html, body: overflow-x: hidden
+  · All grids collapse to single column below 640px
+  · Horizontal scroll process section becomes vertical on mobile
+  · Touch targets minimum 44px
+  · No fixed-width elements
+  · Test at 320px, 375px, 768px, 1280px, 1920px
